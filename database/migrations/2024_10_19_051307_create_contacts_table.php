@@ -13,11 +13,15 @@ return new class () extends Migration {
         Schema::create('contacts', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
             $table->string('name');
+            $table->string('source')->nullable()->comment('Origem do contato (ex: site, indicação, evento)');
+            $table->enum('contact_type', ['individual', 'company'])->default('individual');
+            $table->string('company_name')->nullable()->comment('Nome da empresa se B2B');
+            $table->string('position')->nullable();
             $table->string('phone');
             $table->string('email');
-            $table->string('number')->nullable()->comment('Número da residência ou apartamento');
-            $table->string('cep')->comment('Código postal');
-            $table->json('address')->nullable()->comment('Objeto de valor Address armazenado como JSON');
+            $table->string('cep');
+            $table->json('address')->nullable();
+            $table->json('tags')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

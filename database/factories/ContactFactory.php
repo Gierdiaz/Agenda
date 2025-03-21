@@ -12,11 +12,10 @@ class ContactFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'   => $this->faker->name(),
-            'phone'  => $this->faker->numerify('###########'),
-            'email'  => $this->faker->unique()->safeEmail(),
-            'number' => $this->faker->buildingNumber(),
-            'cep'    => $this->faker->postcode(),
+            'name'  => $this->faker->name(),
+            'phone' => $this->faker->numerify('###########'),
+            'email' => $this->faker->unique()->safeEmail(),
+            'cep'   => $this->faker->postcode(),
         ];
     }
 }

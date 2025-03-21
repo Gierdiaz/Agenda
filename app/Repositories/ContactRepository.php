@@ -39,7 +39,6 @@ class ContactRepository implements ContactRepositoryInterface
             'name'    => $contactDTO->name,
             'phone'   => $contactDTO->phone,
             'email'   => $contactDTO->email,
-            'number'  => $contactDTO->number,
             'cep'     => $contactDTO->cep,
             'address' => $contactDTO->address->toArray(),
         ]);

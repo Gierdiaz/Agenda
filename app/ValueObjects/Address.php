@@ -9,6 +9,7 @@ class Address implements Arrayable
     public function __construct(
         public string $cep,
         public string $logradouro,
+        public string $numero,
         public string $complemento,
         public string $unidade,
         public string $bairro,
@@ -31,6 +32,7 @@ class Address implements Arrayable
         return [
             'cep'         => $this->cep,
             'logradouro'  => $this->logradouro,
+            'numero'      => $this->numero,
             'complemento' => $this->complemento,
             'unidade'     => $this->unidade,
             'bairro'      => $this->bairro,
@@ -53,6 +55,7 @@ class Address implements Arrayable
         return new self(
             $data['cep'] ?? '',
             $data['logradouro'] ?? '',
+            $data['numero'] ?? '',
             $data['complemento'] ?? '',
             $data['unidade'] ?? '',
             $data['bairro'] ?? '',

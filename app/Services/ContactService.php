@@ -64,7 +64,7 @@ class ContactService
     {
         Log::info('===================== Iniciando registro de novo contato =====================', $data);
 
-        if (!isset($data['name'], $data['phone'], $data['email'], $data['number'], $data['cep'])) {
+        if (!isset($data['name'], $data['phone'], $data['email'], $data['cep'])) {
             Log::error('Dados incompletos ao tentar registrar um contato', $data);
 
             throw ValidationException::withMessages(['error' => 'Todos os campos são obrigatórios.']);
@@ -83,11 +83,11 @@ class ContactService
             $data['name'],
             $data['phone'],
             $data['email'],
-            $data['number'],
             $cep,
             Address::fromArray([
                 'cep'         => $addressData->cep ?? null,
                 'logradouro'  => $addressData->logradouro ?? '',
+                'numero'      => $addressData->numero ?? '',
                 'complemento' => $addressData->complemento ?? '',
                 'unidade'     => $addressData->unidade ?? '',
                 'bairro'      => $addressData->bairro ?? '',
@@ -139,6 +139,7 @@ class ContactService
             $data['address'] = Address::fromArray([
                 'cep'         => $addressData->cep ?? null,
                 'logradouro'  => $addressData->logradouro ?? '',
+                'numero'      => $addressData->numero ?? '',
                 'complemento' => $addressData->complemento ?? '',
                 'unidade'     => $addressData->unidade ?? '',
                 'bairro'      => $addressData->bairro ?? '',

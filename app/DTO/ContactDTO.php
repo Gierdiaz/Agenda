@@ -10,7 +10,6 @@ class ContactDTO
         public string $name,
         public string $phone,
         public string $email,
-        public string $number,
         public string $cep,
         public Address $address
     ) {

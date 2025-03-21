@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\LeadStatusEnum;
+use App\Enums\{LeadStatusEnum, ServiceTypeEnum};
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, HasMany};
@@ -17,14 +17,18 @@ class Lead extends Model
     protected $table = 'leads';
 
     protected $fillable = [
-        'source',
-        'interest',
-        'status',
         'contact_id',
+        'segment',
+        'services',
+        'observation',
+        'priority',
+        'status',
+
     ];
 
     protected $casts = [
         'status'     => LeadStatusEnum::class,
+        'services'   => ServiceTypeEnum::class,
         'created_at' => 'datetime:d-m-Y H:i:s',
         'updated_at' => 'datetime:d-m-Y H:i:s',
     ];
