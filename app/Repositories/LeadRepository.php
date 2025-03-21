@@ -11,12 +11,12 @@ class LeadRepository implements LeadRepositoryInterface
     public function insertLead(LeadDTO $leadDTO)
     {
         return Lead::created([
-            'contact_id' => $leadDTO->contactId,
-            'segment' => $leadDTO->segment,
-            'services' => $leadDTO->services,
+            'contact_id'  => $leadDTO->contactId,
+            'segment'     => $leadDTO->segment,
+            'services'    => $leadDTO->services,
             'observation' => $leadDTO->observation,
-            'priority' => $leadDTO->priority,
-            'status' => $leadDTO->status
+            'priority'    => $leadDTO->priority,
+            'status'      => $leadDTO->status,
         ]);
     }
 }
