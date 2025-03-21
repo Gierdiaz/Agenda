@@ -86,14 +86,19 @@ class ContactService
             $data['number'],
             $cep,
             Address::fromArray([
-                'logradouro' => $addressData->logradouro ?? '',
-                'bairro'     => $addressData->bairro ?? '',
-                'cidade'     => $addressData->localidade ?? '',
-                'estado'     => $addressData->uf ?? '',
-                'ibge'       => $addressData->ibge ?? null,
-                'gia'        => $addressData->gia ?? null,
-                'ddd'        => $addressData->ddd ?? null,
-                'siafi'      => $addressData->siafi ?? null,
+                'cep'         => $addressData->cep ?? null,
+                'logradouro'  => $addressData->logradouro ?? '',
+                'complemento' => $addressData->complemento ?? '',
+                'unidade'     => $addressData->unidade ?? '',
+                'bairro'      => $addressData->bairro ?? '',
+                'localidade'  => $addressData->localidade ?? '',
+                'uf'          => $addressData->uf ?? '',
+                'estado'      => $addressData->uf ?? '',
+                'regiao'      => $addressData->regiao ?? '',
+                'ibge'        => $addressData->ibge ?? null,
+                'gia'         => $addressData->gia ?? null,
+                'ddd'         => $addressData->ddd ?? null,
+                'siafi'       => $addressData->siafi ?? null,
             ]),
         );
 
@@ -132,14 +137,19 @@ class ContactService
             }
 
             $data['address'] = Address::fromArray([
-                'logradouro' => $addressData->logradouro ?? '',
-                'bairro'     => $addressData->bairro ?? '',
-                'cidade'     => $addressData->localidade ?? '',
-                'estado'     => $addressData->uf ?? '',
-                'ibge'       => $addressData->ibge ?? null,
-                'gia'        => $addressData->gia ?? null,
-                'ddd'        => $addressData->ddd ?? null,
-                'siafi'      => $addressData->siafi ?? null,
+                'cep'         => $addressData->cep ?? null,
+                'logradouro'  => $addressData->logradouro ?? '',
+                'complemento' => $addressData->complemento ?? '',
+                'unidade'     => $addressData->unidade ?? '',
+                'bairro'      => $addressData->bairro ?? '',
+                'localidade'  => $addressData->localidade ?? '',
+                'uf'          => $addressData->uf ?? '',
+                'estado'      => $addressData->uf ?? '',
+                'regiao'      => $addressData->regiao ?? '',
+                'ibge'        => $addressData->ibge ?? null,
+                'gia'         => $addressData->gia ?? null,
+                'ddd'         => $addressData->ddd ?? null,
+                'siafi'       => $addressData->siafi ?? null,
             ]);
         }
 

@@ -35,7 +35,7 @@ describe('Managing Contact Records', function () {
         getJson(route('contacts.index'))
             ->assertStatus(200)
             ->assertJsonStructure([
-                'data' => [['id', 'name', 'phone', 'email', 'cep']]
+                'data' => [['id', 'name', 'phone', 'email', 'cep']],
             ]);
     });
 
@@ -74,7 +74,7 @@ describe('Managing Contact Records', function () {
             ->assertStatus(200)
             ->assertJsonFragment([
                 'name' => 'Állison Luis',
-                'cep' => '23017-130'
+                'cep'  => '23017-130',
             ]);
     });
 
@@ -89,14 +89,19 @@ describe('Managing Contact Records', function () {
 
         $mock = Mockery::mock(ViaCepIntegration::class);
         $mock->shouldReceive('getAddressByCep')->andReturn((object) [
-            'logradouro' => 'Rua Olinto da Gama Botelho',
-            'bairro'     => 'Bairro RJ',
-            'localidade' => 'Rio de Janeiro',
-            'uf'         => 'RJ',
-            'ibge'       => '3304557',
-            'gia'        => '456',
-            'ddd'        => '21',
-            'siafi'      => '6001',
+            'cep'         => '23017-130',
+            'logradouro'  => 'Rua Olinto da Gama Botelho',
+            'complemento' => 'casa frente',
+            'unidade'     => 'RJ-1001',
+            'bairro'      => 'Bairro RJ',
+            'localidade'  => 'Rio de Janeiro',
+            'uf'          => 'RJ',
+            'estado'      => 'Rio de Janeiro',
+            'regiao'      => 'Sudeste',
+            'ibge'        => '3304557',
+            'gia'         => '456',
+            'ddd'         => '21',
+            'siafi'       => '6001',
         ]);
 
         app()->instance(ViaCepIntegration::class, $mock);
