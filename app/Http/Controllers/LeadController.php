@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LeadRequest;
 use App\Http\Resources\LeadResource;
 use App\Services\LeadService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\{DB};
 
 class LeadController extends Controller
 {
@@ -20,8 +23,26 @@ class LeadController extends Controller
         return LeadResource::collection($leads);
     }
 
-    public function store(): JsonResponse
+    public function store(LeadRequest $request)
     {
-        
+        DB::beginTransaction();
+
+        try {
+            $lead = $this->leadService->createLead($request->all());
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Lead registrado com sucesso.',
+                'data'    => new LeadResource($lead),
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'message' => 'Erro ao registrar lead.',
+                'details' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }

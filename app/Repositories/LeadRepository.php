@@ -3,16 +3,13 @@
 namespace App\Repositories;
 
 use App\Contracts\LeadRepositoryInterface;
-use App\DTOs\LeadDTO;
-use App\Enums\LeadStatusEnum;
-use App\Enums\OpportunityStatusEnum;
-use App\Models\Lead;
-use App\Models\Opportunity;
+use App\DTO\LeadDTO;
+use App\Enums\{LeadStatusEnum, OpportunityStatusEnum};
+use App\Models\{Lead, Opportunity};
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class LeadRepository implements LeadRepositoryInterface
 {
-
     public function paginateLead(): LengthAwarePaginator
     {
         return Lead::query()->orderBy('created_at', 'desc')->paginate(10);
@@ -20,7 +17,7 @@ class LeadRepository implements LeadRepositoryInterface
 
     public function insertLead(LeadDTO $leadDTO)
     {
-        return Lead::created([
+        return Lead::create([
             'contact_id'  => $leadDTO->contactId,
             'segment'     => $leadDTO->segment,
             'services'    => $leadDTO->services,
@@ -32,9 +29,10 @@ class LeadRepository implements LeadRepositoryInterface
 
     public function changeStatus(string $id, string $status): Lead
     {
-        $lead = Lead::findOrFail($id);
+        $lead         = Lead::findOrFail($id);
         $lead->status = $status;
         $lead->save();
+
         return $lead;
     }
 
@@ -47,11 +45,11 @@ class LeadRepository implements LeadRepositoryInterface
         }
 
         $opportunity = Opportunity::create([
-            'lead_id' => $lead->id,
-            'title' => 'Nova Oportunidade',
+            'lead_id'     => $lead->id,
+            'title'       => 'Nova Oportunidade',
             'description' => 'Oportunidade gerada a partir do lead.',
-            'value' => 0.00,
-            'status' => OpportunityStatusEnum::ON_HOLD,
+            'value'       => 0.00,
+            'status'      => OpportunityStatusEnum::ON_HOLD,
         ]);
 
         $lead->status = OpportunityStatusEnum::OPEN->value;

@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\DTOs\LeadDTO;
+use App\DTO\LeadDTO;
 use App\Repositories\LeadRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
@@ -10,7 +10,6 @@ use Illuminate\Validation\ValidationException;
 
 class LeadService
 {
-
     public function __construct(private LeadRepository $leadRepository)
     {
         $this->leadRepository = $leadRepository;
