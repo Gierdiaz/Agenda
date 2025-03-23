@@ -9,10 +9,10 @@ class LeadDTO
     public function __construct(
         public string $contactId,
         public string $segment,
-        public array $services = ServiceTypeEnum::CONSULTING,
+        public array $services = [ServiceTypeEnum::CONSULTING->value],
         public string $observation,
         public string $priority,
-        public string $status = LeadStatusEnum::NEW
+        public string $status = LeadStatusEnum::NEW->value
     ) {
     }
 }

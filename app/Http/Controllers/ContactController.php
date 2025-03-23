@@ -11,9 +11,7 @@ use Illuminate\Support\Facades\{DB};
 
 class ContactController extends Controller
 {
-    private $contactService;
-
-    public function __construct(ContactService $contactService)
+    public function __construct(private ContactService $contactService)
     {
         $this->contactService = $contactService;
     }

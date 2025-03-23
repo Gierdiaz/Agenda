@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{AuthController, ContactController};
+use App\Http\Controllers\{AuthController, ContactController, LeadController};
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -34,4 +34,12 @@ Route::prefix('/v1')
         Route::get('contacts/{id}', [ContactController::class, 'show'])->name('contacts.show');
         Route::put('contacts/{id}', [ContactController::class, 'update'])->name('contacts.update');
         Route::delete('contacts/{id}', [ContactController::class, 'destroy'])->name('contacts.destroy');
+
+        /**
+        * Leads
+        */
+        Route::get('leads/', [LeadController::class, 'index'])->name('leads.index');
+        Route::post('leads/', [LeadController::class, 'store'])->name('leads.store');
+        Route::patch('leads/{id}/status', [LeadController::class, 'updateStatus'])->name('leads.updateStatus');
+        Route::post('leads/{id}/convert', [LeadController::class, 'convertToOpportunity'])->name('leads.convert');
     });
