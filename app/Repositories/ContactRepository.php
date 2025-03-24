@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Contracts\ContactRepositoryInterface;
-use App\DTO\ContactDTO;
+use App\DTOs\ContactDTO;
 use App\Models\Contact;
 use App\ValueObjects\Address;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;

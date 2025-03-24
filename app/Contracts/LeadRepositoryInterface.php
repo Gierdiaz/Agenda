@@ -2,17 +2,19 @@
 
 namespace App\Contracts;
 
-use App\DTO\LeadDTO;
+use App\DTOs\LeadDTO;
 use App\Models\{Lead, Opportunity};
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 interface LeadRepositoryInterface
 {
-    public function paginateLead(): LengthAwarePaginator;
+    public function paginateLeads(): LengthAwarePaginator;
 
-    public function insertLead(LeadDTO $leadDTO);
+    public function findLeadById(string $id): Lead;
 
-    public function convertToOpportunity(string $id): Opportunity;
+    public function createLead(LeadDTO $leadDTO);
 
-    public function changeStatus(string $id, string $status): Lead;
+    public function convertLeadToOpportunity(string $id): Opportunity;
+
+    public function changeLeadStatus(string $id, string $status): Lead;
 }

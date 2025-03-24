@@ -2,7 +2,7 @@
 
 namespace App\Contracts;
 
-use App\DTO\ContactDTO;
+use App\DTOs\ContactDTO;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 interface ContactRepositoryInterface

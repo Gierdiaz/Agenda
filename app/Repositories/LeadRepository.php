@@ -3,19 +3,24 @@
 namespace App\Repositories;
 
 use App\Contracts\LeadRepositoryInterface;
-use App\DTO\LeadDTO;
-use App\Enums\{LeadStatusEnum, OpportunityStatusEnum};
+use App\DTOs\LeadDTO;
+use App\Enums\{OpportunityStatusEnum};
 use App\Models\{Lead, Opportunity};
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class LeadRepository implements LeadRepositoryInterface
 {
-    public function paginateLead(): LengthAwarePaginator
+    public function paginateLeads(): LengthAwarePaginator
     {
         return Lead::query()->orderBy('created_at', 'desc')->paginate(10);
     }
 
-    public function insertLead(LeadDTO $leadDTO)
+    public function findLeadById(string $id): Lead
+    {
+        return Lead::findOrFail($id);
+    }
+
+    public function createLead(LeadDTO $leadDTO)
     {
         return Lead::create([
             'contact_id'  => $leadDTO->contactId,
@@ -27,7 +32,7 @@ class LeadRepository implements LeadRepositoryInterface
         ]);
     }
 
-    public function changeStatus(string $id, string $status): Lead
+    public function changeLeadStatus(string $id, string $status): Lead
     {
         $lead         = Lead::findOrFail($id);
         $lead->status = $status;
@@ -36,13 +41,9 @@ class LeadRepository implements LeadRepositoryInterface
         return $lead;
     }
 
-    public function convertToOpportunity(string $id): Opportunity
+    public function convertLeadToOpportunity(string $id): Opportunity
     {
         $lead = Lead::findOrFail($id);
-
-        if ($lead->status !== LeadStatusEnum::TRADIGNG->value) {
-            throw new \Exception('Lead nao pode ser convertido para oportunidade');
-        }
 
         $opportunity = Opportunity::create([
             'lead_id'     => $lead->id,

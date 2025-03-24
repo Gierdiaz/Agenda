@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\DTO\ContactDTO;
+use App\DTOs\ContactDTO;
 use App\Integrations\ViaCepIntegration;
 use App\Repositories\ContactRepository;
 use App\ValueObjects\Address;
@@ -64,17 +64,10 @@ class ContactService
     {
         Log::info('===================== Iniciando registro de novo contato =====================', $data);
 
-        if (!isset($data['name'], $data['phone'], $data['email'], $data['cep'])) {
-            Log::error('Dados incompletos ao tentar registrar um contato', $data);
-
-            throw ValidationException::withMessages(['error' => 'Todos os campos são obrigatórios.']);
-        }
-
-        $cep         = $data['cep'];
-        $addressData = $this->viaCep->getAddressByCep($cep);
+        $addressData = $this->viaCep->getAddressByCep($data['cep']);
 
         if (!$addressData || !isset($addressData->logradouro, $addressData->bairro, $addressData->localidade, $addressData->uf)) {
-            Log::error("Endereço não encontrado para o CEP: {$cep}");
+            Log::error("Endereço não encontrado para o CEP: {$data['cep']}");
 
             throw ValidationException::withMessages(['cep' => 'Endereço não encontrado para o CEP fornecido.']);
         }
@@ -83,7 +76,7 @@ class ContactService
             $data['name'],
             $data['phone'],
             $data['email'],
-            $cep,
+            $data['cep'],
             Address::fromArray([
                 'cep'         => $addressData->cep ?? null,
                 'logradouro'  => $addressData->logradouro ?? '',
