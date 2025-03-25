@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\{LeadStatusEnum, PriorityEnum, SegmentEnum, ServiceTypeEnum};
+use App\Enums\{SegmentEnum, ServiceTypeEnum};
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class LeadRequest extends FormRequest
 {
@@ -23,12 +24,34 @@ class LeadRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'contact_id'  => 'required|uuid|exists:contacts,id',
-            'segment'     => 'nullable|string|in:' . implode(',', array_column(SegmentEnum::cases(), 'value')),
-            'services'    => 'required|string|in:' . implode(',', array_column(ServiceTypeEnum::cases(), 'value')),
-            'observation' => 'nullable|string|max:500',
-            'priority'    => 'required|string|in:' . implode(',', array_column(PriorityEnum::cases(), 'value')),
-            'status'      => 'required|string|in:' . implode(',', array_column(LeadStatusEnum::cases(), 'value')),
+            // Identificação do lead
+            'name'         => 'required|string|max:255|regex:/^[\pL\s\-]+$/u',
+            'contact_type' => 'required|string',
+            'phone'        => 'nullable|string|regex:/^(\+55)?\d{10,11}$/',
+            'email'        => 'nullable|email|max:255',
+
+            // Informações da empresa
+            'company_name' => 'nullable|string|max:255',
+            'position'     => 'nullable|string|max:255',
+
+            // Interesses
+            'segment'     => 'required|string|in:' . Rule::in(array_column(SegmentEnum::cases(), 'value')),
+            'services'    => 'required|string|in:' . Rule::in(array_column(ServiceTypeEnum::cases(), 'value')),
+            'interests'   => 'nullable|array',
+            'interests.*' => 'string|max:255',
+            'observation' => 'nullable|string|max:5000',
+
+            // Origem do lead
+            'source'              => 'required|string|max:255',
+            'lead_source_details' => 'nullable|string|max:255',
+
+            // Status e acompanhamento
+            'priority' => 'required|string|in:baixa,media,alta',
+            'status'   => 'required|string|in:novo,em_andamento,convertido,perdido',
+
+            // Endereço
+            'cep'     => 'required|string|regex:/^\d{5}-?\d{3}$/',
+            'address' => 'nullable|array',
         ];
     }
 
@@ -38,24 +61,35 @@ class LeadRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'contact_id.required' => 'O campo contato é obrigatório.',
-            'contact_id.uuid'     => 'O ID do contato deve ser um UUID válido.',
-            'contact_id.exists'   => 'O contato fornecido não existe.',
+            'name.required' => 'O campo nome é obrigatório.',
+            'name.regex'    => 'O nome só pode conter letras, espaços e traços.',
+            'name.max'      => 'O nome não pode ter mais que 255 caracteres.',
 
-            'segment.string' => 'O segmento deve ser um texto.',
-            'segment.max'    => 'O segmento não pode ter mais que 255 caracteres.',
+            'contact_type.required' => 'O tipo de contato é obrigatório.',
+            'contact_type.in'       => 'O tipo de contato deve ser email, phone ou whatsapp.',
 
-            'services.required' => 'O serviço é obrigatório.',
-            'services.in'       => 'O serviço fornecido é inválido.',
+            'phone.regex' => 'O telefone deve conter apenas números e pode iniciar com "+". Exemplo: +5511998765432',
 
-            'observation.string' => 'A observação deve ser um texto.',
-            'observation.max'    => 'A observação não pode ter mais que 500 caracteres.',
+            'email.email' => 'Forneça um endereço de e-mail válido.',
+            'email.max'   => 'O e-mail não pode ter mais que 255 caracteres.',
 
-            'priority.required' => 'O campo prioridade é obrigatório.',
+            'segment.required' => 'O segmento é obrigatório.',
+            'segment.in'       => 'O segmento deve ser um dos seguintes: tecnologia, saude, financas, educacao ou outros.',
+
+            'services.required' => 'Os serviços são obrigatórios.',
+            'services.array'    => 'Os serviços devem ser uma lista.',
+            'services.*.in'     => 'Serviço inválido selecionado.',
+
+            'priority.required' => 'A prioridade é obrigatória.',
             'priority.in'       => 'A prioridade deve ser baixa, média ou alta.',
 
-            'status.required' => 'O campo status é obrigatório.',
-            'status.in'       => 'O status fornecido é inválido.',
+            'status.required' => 'O status é obrigatório.',
+            'status.in'       => 'O status deve ser novo, em andamento, convertido ou perdido.',
+
+            'cep.required' => 'O campo CEP é obrigatório.',
+            'cep.regex'    => 'O CEP deve estar no formato 00000-000 ou 00000000.',
+
+            'address.array' => 'O endereço deve ser um objeto.',
         ];
     }
 }

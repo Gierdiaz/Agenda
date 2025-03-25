@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LeadRequest;
 use App\Http\Resources\LeadResource;
 use App\Services\LeadService;
+
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\{DB, Log};
+
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class LeadController extends Controller
 {
@@ -18,9 +22,23 @@ class LeadController extends Controller
 
     public function index(): AnonymousResourceCollection
     {
-        $leads = $this->leadService->paginateLeads();
+        $leads = $this->leadService->listLeads();
 
         return LeadResource::collection($leads);
+    }
+
+    public function show($id)
+    {
+        try {
+            $lead = $this->leadService->findLeadById($id);
+
+            return LeadResource::make($lead);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao buscar contato.',
+                'details' => $e->getMessage(),
+            ], $e->getCode() ?: Response::HTTP_NOT_FOUND);
+        }
     }
 
     public function store(LeadRequest $request)
@@ -34,26 +52,29 @@ class LeadController extends Controller
             $execute = round(microtime(true) - LARAVEL_START, 4);
 
             Log::info('Novo Lead registrado com sucesso.', [
-                'lead_id'        => $lead->id,
+                'lead_id' => $lead->id,
                 'execution_time' => "{$execute} segundos",
             ]);
 
             return response()->json([
                 'message' => 'Lead cadastrado com sucesso.',
-                'data'    => new LeadResource($lead),
+                'data' => new LeadResource($lead),
             ]);
+
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Falha ao tentar registrar um novo lead.' . [
+            Log::error('Falha ao tentar registrar um novo lead:', [
                 'error' => $e->getMessage(),
-                'file'  => $e->getFile(),
-                'line'  => $e->getLine(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
                 'trace' => $e->getTraceAsString(),
             ]);
 
             return response()->json([
                 'message' => 'Erro ao registrar lead.',
-                'details' => $e->getMessage(),
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -70,22 +91,22 @@ class LeadController extends Controller
             DB::commit();
 
             Log::info('Status do lead atualizado com sucesso.', [
-                'lead_id'    => $lead->id,
+                'lead_id' => $lead->id,
                 'new_status' => $lead->status,
             ]);
 
             return response()->json([
                 'message' => 'Status do lead atualizado com sucesso.',
-                'data'    => new LeadResource($lead),
+                'data' => new LeadResource($lead),
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Erro ao atualizar status do lead.', [
                 'lead_id' => $id,
-                'error'   => $e->getMessage(),
-                'file'    => $e->getFile(),
-                'line'    => $e->getLine(),
-                'trace'   => $e->getTraceAsString(),
+                'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString(),
             ]);
 
             return response()->json([
@@ -95,40 +116,44 @@ class LeadController extends Controller
         }
     }
 
-    public function convertToOpportunity(string $id)
+    public function update(LeadRequest $request, $id): JsonResponse
     {
-        Log::info('Iniciando conversão de lead para oportunidade.', ['lead_id' => $id]);
-
         DB::beginTransaction();
 
         try {
-            $opportunity = $this->leadService->convertLeadToOpportunity($id);
+
+            $this->leadService->editLeadDetails($id, $request->all());
 
             DB::commit();
 
-            Log::info('Lead convertido para oportunidade com sucesso.', [
-                'lead_id'        => $id,
-                'opportunity_id' => $opportunity->id,
-            ]);
-
             return response()->json([
-                'message' => 'Lead convertido para oportunidade com sucesso.',
-                'data'    => $opportunity,
-            ]);
+                'message' => 'Contato atualizado com sucesso.',
+            ], Response::HTTP_OK);
+
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Erro ao converter lead para oportunidade.', [
-                'lead_id' => $id,
-                'error'   => $e->getMessage(),
-                'file'    => $e->getFile(),
-                'line'    => $e->getLine(),
-                'trace'   => $e->getTraceAsString(),
-            ]);
 
             return response()->json([
-                'message' => 'Erro ao converter lead para oportunidade.',
+                'message' => 'Erro ao atualizar contato.',
                 'details' => $e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function destroy($id): JsonResponse
+    {
+        try {
+            $this->leadService->removeLeadById($id);
+
+            return response()->json([
+                'message' => 'Contato removido com sucesso.',
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao excluir contato.',
+                'details' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

@@ -202,7 +202,7 @@ docker exec app ./vendor/bin/phpstan analyse --memory-limit=2G
 ### Listar Contatos
 
 - **Método:** GET  
-- **Endpoint:** `/api/v1/contacts`  
+- **Endpoint:** `/api/v1/leads`  
 - **Resposta:**
 ```json
     "data": [
@@ -215,7 +215,7 @@ docker exec app ./vendor/bin/phpstan analyse --memory-limit=2G
         "cep": "22070-012",
         "address": "Praia de Copacabana, Rio de Janeiro - RJ",
         "links": {
-          "show": "/api/contacts/550e8400-e29b-41d4-a716-446655440000"
+          "show": "/api/leads/550e8400-e29b-41d4-a716-446655440000"
         }
       }
     ]
@@ -224,7 +224,7 @@ docker exec app ./vendor/bin/phpstan analyse --memory-limit=2G
 ### Mostra Contatos
 
 - **Método:** GET  
-- **Endpoint:** `/api/v1/contacts`  
+- **Endpoint:** `/api/v1/leads`  
 - **Resposta:**
 ```json
     "data": {
@@ -236,14 +236,14 @@ docker exec app ./vendor/bin/phpstan analyse --memory-limit=2G
         "cep": "22070-012",
         "address": "Endereço, Bairro, Cidade - UF",
         "links": {
-            "index": "/api/contacts"
+            "index": "/api/leads"
         }
     }
 ```
 ### Buscar Contato
 
 - **Método:** GET  
-- **Endpoint:** `/api/v1/contacts/search`  
+- **Endpoint:** `/api/v1/leads/search`  
 - **Parâmetros:** `name`, `email`, `cep`, `number`  
 - **Resposta:**
 ```json
@@ -263,7 +263,7 @@ docker exec app ./vendor/bin/phpstan analyse --memory-limit=2G
 ### Adicionar Contato
 
 - **Método:** POST  
-- **Endpoint:** `/api/v1/contacts`  
+- **Endpoint:** `/api/v1/leads`  
 - **Corpo da Requisição:**
 ```json
   {
@@ -291,7 +291,7 @@ docker exec app ./vendor/bin/phpstan analyse --memory-limit=2G
 ### Atualizar Contato
 
 - **Método:** PUT  
-- **Endpoint:** `/api/v1/contacts/{id}`  
+- **Endpoint:** `/api/v1/leads/{id}`  
 - **Corpo da Requisição:**
 ```json
   {
@@ -311,7 +311,7 @@ docker exec app ./vendor/bin/phpstan analyse --memory-limit=2G
 ### Excluir Contato
 
 - **Método:** DELETE  
-- **Endpoint:** `/api/v1/contacts/{id}`  
+- **Endpoint:** `/api/v1/leads/{id}`  
 - **Resposta:**
 ```json
   {

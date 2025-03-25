@@ -14,7 +14,7 @@ return [
     | messages to your logs. The value provided here should match one of
     | the channels present in the list of "channels" configured below.
     |
-    */
+     */
 
     'default' => env('LOG_CHANNEL', 'stack'),
 
@@ -27,7 +27,7 @@ return [
     | regarding deprecated PHP and library features. This allows you to get
     | your application ready for upcoming major versions of dependencies.
     |
-    */
+     */
 
     'deprecations' => [
         'channel' => env('LOG_DEPRECATIONS_CHANNEL', 'null'),
@@ -46,7 +46,7 @@ return [
     | Available drivers: "single", "daily", "slack", "syslog",
     |                    "errorlog", "monolog", "custom", "stack"
     |
-    */
+     */
 
     'channels' => [
 
@@ -125,9 +125,9 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
-        'contact' => [
+        'lead' => [
             'driver'               => 'daily',
-            'path'                 => storage_path('logs/contact.log'),
+            'path'                 => storage_path('logs/lead.log'),
             'level'                => 'debug',
             'days'                 => 7,
             'replace_placeholders' => true,

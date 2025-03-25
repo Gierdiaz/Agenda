@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{AuthController, ContactController, LeadController};
+use App\Http\Controllers\{AuthController, LeadController};
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -26,14 +26,14 @@ Route::prefix('/v1')
         Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
         /**
-        * Contacts
+        * Leads
         */
-        Route::get('contacts/', [ContactController::class, 'index'])->name('contacts.index');
-        Route::get('contacts/search', [ContactController::class, 'search'])->name('contacts.search');
-        Route::post('contacts/', [ContactController::class, 'store'])->name('contacts.store');
-        Route::get('contacts/{id}', [ContactController::class, 'show'])->name('contacts.show');
-        Route::put('contacts/{id}', [ContactController::class, 'update'])->name('contacts.update');
-        Route::delete('contacts/{id}', [ContactController::class, 'destroy'])->name('contacts.destroy');
+        Route::get('leads/', [LeadController::class, 'index'])->name('leads.index');
+        Route::get('leads/search', [LeadController::class, 'search'])->name('leads.search');
+        Route::post('leads/', [LeadController::class, 'store'])->name('leads.store');
+        Route::get('leads/{id}', [LeadController::class, 'show'])->name('leads.show');
+        Route::put('leads/{id}', [LeadController::class, 'update'])->name('leads.update');
+        Route::delete('leads/{id}', [LeadController::class, 'destroy'])->name('leads.destroy');
 
         /**
         * Leads

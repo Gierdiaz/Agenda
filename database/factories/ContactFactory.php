@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\Contact;
+use App\Models\Lead;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ContactFactory extends Factory
+class LeadFactory extends Factory
 {
-    protected $model = Contact::class;
+    protected $model = Lead::class;
 
     public function definition(): array
     {

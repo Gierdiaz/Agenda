@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Contracts\ContactRepositoryInterface;
-use App\Repositories\ContactRepository;
+use App\Contracts\LeadRepositoryInterface;
+use App\Repositories\LeadRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(ContactRepositoryInterface::class, ContactRepository::class);
+        $this->app->bind(LeadRepositoryInterface::class, LeadRepository::class);
     }
 
     /**
